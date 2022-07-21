@@ -18,8 +18,8 @@
  *   'aa',''    => 'aa'
  *   '',  'bb'  => 'bb'
  */
-function concatenateStrings(/* value1, value2 */) {
-  throw new Error('Not implemented');
+function concatenateStrings(value1, value2) {
+  return value1 + value2;
 }
 
 
@@ -34,8 +34,8 @@ function concatenateStrings(/* value1, value2 */) {
  *   'b'     => 1
  *   ''      => 0
  */
-function getStringLength(/* value */) {
-  throw new Error('Not implemented');
+function getStringLength(value) {
+  return value.length;
 }
 
 /**
@@ -51,8 +51,8 @@ function getStringLength(/* value */) {
  *   'John','Doe'      => 'Hello, John Doe!'
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
-function getStringFromTemplate(/* firstName, lastName */) {
-  throw new Error('Not implemented');
+function getStringFromTemplate(firstName, lastName) {
+  return `Hello, ${firstName} ${lastName}!`;
 }
 
 /**
@@ -65,8 +65,20 @@ function getStringFromTemplate(/* firstName, lastName */) {
  *   'Hello, John Doe!' => 'John Doe'
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
-function extractNameFromTemplate(/* value */) {
-  throw new Error('Not implemented');
+function extractNameFromTemplate(value) {
+  const arrStr = value.split(' ').splice(1, 2);
+  const correctArr = arrStr.map((str) => {
+    let res = '';
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < str.length; i++) {
+      const char = str[i];
+      if (char !== '!') {
+        res += char;
+      }
+    }
+    return res;
+  });
+  return `${correctArr[0]} ${correctArr[1]}`;
 }
 
 
@@ -80,8 +92,8 @@ function extractNameFromTemplate(/* value */) {
  *   'John Doe'  => 'J'
  *   'cat'       => 'c'
  */
-function getFirstChar(/* value */) {
-  throw new Error('Not implemented');
+function getFirstChar(value) {
+  return value[0];
 }
 
 /**
@@ -95,8 +107,25 @@ function getFirstChar(/* value */) {
  *   'cat'              => 'cat'
  *   '\tHello, World! ' => 'Hello, World!'
  */
-function removeLeadingAndTrailingWhitespaces(/* value */) {
-  throw new Error('Not implemented');
+function removeLeadingAndTrailingWhitespaces(value) {
+  const str = value.replace(/\t/, ' ');
+  // eslint-disable-next-line no-plusplus, no-shadow
+  function delSpaceInBeginStr(str) {
+    if (str[0] === ' ') {
+      return delSpaceInBeginStr(str.split('').splice(1, str.length).join(''));
+    }
+    return str;
+  }
+
+  // eslint-disable-next-line no-shadow
+  function delSpaceInEndStr(str) {
+    if (str[str.length - 1] === ' ') {
+      return delSpaceInEndStr(str.split('').splice(0, str.length - 1).join(''));
+    }
+    return str;
+  }
+
+  return delSpaceInEndStr(delSpaceInBeginStr(str));
 }
 
 /**
@@ -110,8 +139,13 @@ function removeLeadingAndTrailingWhitespaces(/* value */) {
  *   'A', 5  => 'AAAAA'
  *   'cat', 3 => 'catcatcat'
  */
-function repeatString(/* value, count */) {
-  throw new Error('Not implemented');
+function repeatString(value, count) {
+  let resStr = '';
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < count; i++) {
+    resStr += value;
+  }
+  return resStr;
 }
 
 /**
@@ -126,8 +160,11 @@ function repeatString(/* value, count */) {
  *   'I like legends', 'end' => 'I like legs',
  *   'ABABAB','BA' => 'ABAB'
  */
-function removeFirstOccurrences(/* str, value */) {
-  throw new Error('Not implemented');
+function removeFirstOccurrences(str, value) {
+  const index = str.indexOf(value);
+  const strArr = str.split('');
+  strArr.splice(index, value.length);
+  return strArr.join('');
 }
 
 /**
@@ -141,8 +178,16 @@ function removeFirstOccurrences(/* str, value */) {
  *   '<span>' => 'span'
  *   '<a>' => 'a'
  */
-function unbracketTag(/* str */) {
-  throw new Error('Not implemented');
+function unbracketTag(str) {
+  let resStr = '';
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < str.length; i++) {
+    const char = str[i];
+    if (char !== '<' && char !== '>') {
+      resStr += char;
+    }
+  }
+  return resStr;
 }
 
 
@@ -156,8 +201,8 @@ function unbracketTag(/* str */) {
  *   'Thunderstruck' => 'THUNDERSTRUCK'
  *  'abcdefghijklmnopqrstuvwxyz' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
  */
-function convertToUpperCase(/* str */) {
-  throw new Error('Not implemented');
+function convertToUpperCase(str) {
+  return str.toUpperCase();
 }
 
 /**
@@ -175,8 +220,8 @@ function convertToUpperCase(/* str */) {
  *   ],
  *   'info@gmail.com' => ['info@gmail.com']
  */
-function extractEmails(/* str */) {
-  throw new Error('Not implemented');
+function extractEmails(str) {
+  return str.split(';');
 }
 
 /**
@@ -202,8 +247,36 @@ function extractEmails(/* str */) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(width, height) {
+  let restr = '';
+  // debugger
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < height; i++) {
+    // eslint-disable-next-line no-plusplus
+    for (let n = 0; n < width; n++) {
+      if (n === 0 && i === 0) {
+        restr += '┌';
+      } else if (i === 0 && n === width - 1) {
+        restr += '┐\n';
+      } else if (i !== 0 && i !== height - 1 && n === 0) {
+        restr += '│';
+      } else if (i !== 0 && i !== height - 1 && n === width - 1) {
+        restr += '│\n';
+      } else if (i !== 0 && i !== height - 1 && n !== 0 && n !== width - 1) {
+        restr += ' ';
+      } else if ((i === 0 && n !== 0 && n !== width - 1)
+        || (i === width - 1 && n !== 0 && n !== width - 1)) {
+        restr += '─';
+      } else if (i === height - 1 && n === 0) {
+        restr += '└';
+      } else if (height - 1 && n === width - 1) {
+        restr += '┘\n';
+      } else if (height - 1 || i === width - 1) {
+        restr += '─';
+      }
+    }
+  }
+  return restr;
 }
 
 
@@ -223,8 +296,27 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  let strRes = '';
+  // eslint-disable-next-line no-plusplus
+  for (let i = 0; i < str.length; i++) {
+    // eslint-disable-next-line no-inner-declarations
+    function getCode(char) {
+      const code = char.codePointAt(0);
+      if (code > 64 && code < 91) {
+        if (code + 13 > 90) return code + 13 - 26;
+        return code + 13;
+      } if (code > 96 && code < 123) {
+        if (code + 13 > 122) return code + 13 - 26;
+        return code + 13;
+      }
+      return code;
+    }
+    const char = str[i];
+    const code = getCode(char);
+    strRes += String.fromCodePoint(code);
+  }
+  return strRes;
 }
 
 /**
@@ -240,8 +332,15 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  if (typeof value === 'string') return true;
+  if (typeof value === 'object') {
+    if (value instanceof String) {
+      return true;
+    }
+  }
+
+  return false;
 }
 
 
@@ -269,8 +368,56 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+
+// eslint-disable-next-line consistent-return
+function getCardId(value) {
+  const cardValue = (value.length === 3) ? value.split('')[0] + value.split('')[1] : value.split('')[0];
+  const cardSuit = (value.length === 3) ? value.split('')[2] : value.split('')[1];
+  // eslint-disable-next-line consistent-return, no-shadow
+  function getIndex(cardValue) {
+    switch (cardValue) {
+      case 'A':
+        return 0;
+      case '2':
+        return 1;
+      case '3':
+        return 2;
+      case '4':
+        return 3;
+      case '5':
+        return 4;
+      case '6':
+        return 5;
+      case '7':
+        return 6;
+      case '8':
+        return 7;
+      case '9':
+        return 8;
+      case '10':
+        return 9;
+      case 'J':
+        return 10;
+      case 'Q':
+        return 11;
+      case 'K':
+        return 12;
+      default:
+        break;
+    }
+  }
+  switch (cardSuit) {
+    case '♣':
+      return getIndex(cardValue);
+    case '♦':
+      return getIndex(cardValue) + 13;
+    case '♥':
+      return getIndex(cardValue) + 26;
+    case '♠':
+      return getIndex(cardValue) + 39;
+    default:
+      break;
+  }
 }
 
 
