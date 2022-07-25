@@ -23,8 +23,11 @@
  *   getComposition(Math.sin, Math.asin)(x) => Math.sin(Math.asin(x))
  *
  */
-function getComposition(/* f, g */) {
-  throw new Error('Not implemented');
+function getComposition(f, g) {
+  // eslint-disable-next-line func-names
+  return function (x) {
+    return f(g(x));
+  };
 }
 
 
@@ -44,8 +47,11 @@ function getComposition(/* f, g */) {
  *   power05(16) => 4
  *
  */
-function getPowerFunction(/* exponent */) {
-  throw new Error('Not implemented');
+function getPowerFunction(exponent) {
+  // eslint-disable-next-line func-names
+  return function (x) {
+    return x ** exponent;
+  };
 }
 
 
@@ -81,8 +87,17 @@ function getPolynom() {
  *   ...
  *   memoizer() => the same random number  (next run, returns the previous cached result)
  */
-function memoize(/* func */) {
-  throw new Error('Not implemented');
+function memoize(func) {
+  const memory = [];
+  // eslint-disable-next-line consistent-return
+  return function f(arg) {
+    if (memory.length > 0) {
+      return memory[0];
+    }
+    const result = func(arg);
+    memory.push(result);
+    return result;
+  };
 }
 
 
@@ -129,8 +144,16 @@ function retry(/* func, attempts */) {
  * cos(3.141592653589793) ends
  *
  */
-function logger(/* func, logFunc */) {
-  throw new Error('Not implemented');
+function logger(func, logFunc) {
+  return function fn(...arg) {
+    const argsToArr = JSON.stringify(arg).slice(1, -1);
+    // eslint-disable-next-line prefer-destructuring
+    const name = func.name;
+    logFunc(`${name}(${argsToArr}) starts`);
+    const res = func(...arg);
+    logFunc(`${name}(${argsToArr}) ends`);
+    return res;
+  };
 }
 
 
@@ -147,8 +170,22 @@ function logger(/* func, logFunc */) {
  *   partialUsingArguments(fn, 'a','b','c')('d') => 'abcd'
  *   partialUsingArguments(fn, 'a','b','c','d')() => 'abcd'
  */
-function partialUsingArguments(/* fn, ...args1 */) {
-  throw new Error('Not implemented');
+function partialUsingArguments(fn, ...args1) {
+  // eslint-disable-next-line no-console, no-unused-vars
+  let str = '';
+  return function f(...args2) {
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < args1.length; i++) {
+      const char = args1[i];
+      str += char;
+    }
+    // eslint-disable-next-line no-plusplus
+    for (let n = 0; n < args2.length; n++) {
+      const el = args2[n];
+      str += el;
+    }
+    return str;
+  };
 }
 
 
@@ -169,8 +206,12 @@ function partialUsingArguments(/* fn, ...args1 */) {
  *   getId4() => 7
  *   getId10() => 11
  */
-function getIdGeneratorFunction(/* startFrom */) {
-  throw new Error('Not implemented');
+function getIdGeneratorFunction(startFrom) {
+  let num = startFrom;
+  return function f() {
+    num += 1;
+    return num - 1;
+  };
 }
 
 
